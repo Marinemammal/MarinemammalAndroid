@@ -1,0 +1,15 @@
+<resources>
+
+
+    <string name="app_name">MarineMammalApp</string>
+
+    <string name="title">Marine Mammal App</string>
+
+
+    <string name="valid_name">Enter valid name</string>
+    <string name="valid_phNum">Enter valid phone number</string>
+    <string name="valid_checkbox">Agree with Terms and Conditions</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
