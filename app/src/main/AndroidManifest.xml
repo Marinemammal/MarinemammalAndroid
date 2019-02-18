@@ -27,24 +27,41 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".RegistrationActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ImageDescriptionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".FinRuleActivity" />
-        <activity android:name=".BeakRuleActivity" />
-        <activity android:name=".OnlyGreyRuleActivity" />
-        <activity android:name=".GreyPinkRuleActivity" />
-        <activity android:name=".ResultActivity" />
-        <activity android:name=".AdditionalCommentsActivity"></activity>
+
+        <activity android:name=".FinRuleActivity"
+            android:screenOrientation="portrait">
+
+    </activity>
+
+        <activity android:name=".BeakRuleActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".OnlyGreyRuleActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".GreyPinkRuleActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ResultActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".AdditionalCommentsActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -18,11 +18,14 @@ public class OnlyGreyRuleActivity extends AppCompatActivity {
 
     Button btnNext;
 
+    AppPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_only_grey_rule);
 
+        preferences = new AppPreferences(OnlyGreyRuleActivity.this);
 
         initializeViews();
 
@@ -44,6 +47,8 @@ public class OnlyGreyRuleActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(radioButton_grey.isChecked()){
+                    preferences.setMammalColorGrey("grey");
+                    preferences.setMammalColorPink("");
                     Log.d("On Img click","color grey is selected -- OK");
                     Intent intent = new Intent(OnlyGreyRuleActivity.this, AdditionalCommentsActivity.class );
                     startActivity(intent);
@@ -51,12 +56,14 @@ public class OnlyGreyRuleActivity extends AppCompatActivity {
 
                 }
                 else if(radioButton_grey_pink.isChecked()){
+                    preferences.setMammalColorGrey("grey");
                     Log.d("On Img click","other colors Next question--- NEXT");
                     Intent intent = new Intent(OnlyGreyRuleActivity.this, GreyPinkRuleActivity.class );
                     startActivity(intent);
 
                 }
                 else {
+                    preferences.setMammalColorGrey("maybe");
                     Log.d("On Img click","i dont know**");
                     Intent intent = new Intent(OnlyGreyRuleActivity.this, GreyPinkRuleActivity.class );
                     startActivity(intent);

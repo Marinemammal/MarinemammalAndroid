@@ -18,11 +18,14 @@ public class FinRuleActivity extends AppCompatActivity {
 
     Button btnNext;
 
+    AppPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fin_rule);
 
+        preferences = new AppPreferences(FinRuleActivity.this);
 
         initializeViews();
 
@@ -44,6 +47,10 @@ public class FinRuleActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(radioButton_noFin.isChecked()){
+                    preferences.setMammalHasFin("no");
+                    preferences.setMammalHasBeak("");
+                    preferences.setMammalColorGrey("");
+                    preferences.setMammalColorPink("");
                     Log.d("On Img click","No fin is selected -- OK");
                     Intent intent = new Intent(FinRuleActivity.this, AdditionalCommentsActivity.class );
                     startActivity(intent);
@@ -51,12 +58,14 @@ public class FinRuleActivity extends AppCompatActivity {
 
                 }
                 else if(radioButton_Fin.isChecked()){
+                    preferences.setMammalHasFin("yes");
                     Log.d("On Img click","With fin- Next question--- NEXT");
                     Intent intent = new Intent(FinRuleActivity.this, BeakRuleActivity.class );
                     startActivity(intent);
 
                 }
                 else {
+                    preferences.setMammalHasFin("maybe");
                     Log.d("On Img click","i dont know**");
                     Intent intent = new Intent(FinRuleActivity.this, BeakRuleActivity.class );
                     startActivity(intent);

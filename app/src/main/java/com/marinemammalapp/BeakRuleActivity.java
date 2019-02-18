@@ -18,12 +18,15 @@ public class BeakRuleActivity extends AppCompatActivity {
 
     Button btnNext;
 
+    AppPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beak_rule);
 
 
+        preferences = new AppPreferences(BeakRuleActivity.this);
         initializeViews();
 
     }
@@ -44,6 +47,9 @@ public class BeakRuleActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(radioButton_noBeak.isChecked()){
+                    preferences.setMammalHasBeak("no");
+                    preferences.setMammalColorGrey("");
+                    preferences.setMammalColorPink("");
                     Log.d("On Img click","No beak is selected -- OK");
                     Intent intent = new Intent(BeakRuleActivity.this, AdditionalCommentsActivity.class );
                     startActivity(intent);
@@ -51,12 +57,14 @@ public class BeakRuleActivity extends AppCompatActivity {
 
                 }
                 else if(radioButton_Beak.isChecked()){
+                    preferences.setMammalHasBeak("yes");
                     Log.d("On Img click","With beak- Next question--- NEXT");
                     Intent intent = new Intent(BeakRuleActivity.this, OnlyGreyRuleActivity.class );
                     startActivity(intent);
 
                 }
                 else {
+                    preferences.setMammalHasBeak("maybe");
                     Log.d("On Img click","i dont know**");
                     Intent intent = new Intent(BeakRuleActivity.this, OnlyGreyRuleActivity.class );
                     startActivity(intent);

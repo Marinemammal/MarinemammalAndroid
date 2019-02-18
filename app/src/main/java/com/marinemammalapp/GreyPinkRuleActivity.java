@@ -17,11 +17,14 @@ public class GreyPinkRuleActivity extends AppCompatActivity {
 
     Button btnNext;
 
+    AppPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grey_pink_rule);
 
+        preferences = new AppPreferences(GreyPinkRuleActivity.this);
 
         initializeViews();
 
@@ -42,7 +45,9 @@ public class GreyPinkRuleActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(radioButton_grey_pink.isChecked()){
-                    Log.d("On Img click","No fin is selected -- OK");
+                    preferences.setMammalColorPink("pink");
+                    preferences.setMammalColorGrey("grey");
+                    Log.d("On Img click","pink and grey -- OK");
                     Intent intent = new Intent(GreyPinkRuleActivity.this, AdditionalCommentsActivity.class );
                     startActivity(intent);
 
@@ -50,6 +55,7 @@ public class GreyPinkRuleActivity extends AppCompatActivity {
                 }
 
                 else {
+                    preferences.setMammalColorPink("maybe");
                     Log.d("On Img click","i dont know**");
                     Intent intent = new Intent(GreyPinkRuleActivity.this, AdditionalCommentsActivity.class );
                     startActivity(intent);
