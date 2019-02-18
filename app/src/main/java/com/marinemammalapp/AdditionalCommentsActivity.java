@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.marinemammalapp.WebServices.APIClient;
@@ -195,6 +196,8 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
 //                    }
                 } catch (Exception e) {
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(AdditionalCommentsActivity.this, "Please check your internet connection and try again.",
+                            Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
@@ -204,6 +207,8 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
             @Override
             public void onFailure(Call<SaveDataResponse> call, Throwable t) {
 
+                Toast.makeText(AdditionalCommentsActivity.this, "Please check your internet connection and try again.",
+                        Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
             }
         });

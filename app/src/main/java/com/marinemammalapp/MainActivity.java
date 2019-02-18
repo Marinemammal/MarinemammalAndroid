@@ -16,7 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.marinemammalapp.WebServices.APIClient;
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     Button    btnNext;
     RadioButton btnDead;
     RadioButton btnAlive;
+
+    private ProgressBar progressBar;
 
 
     @Override
@@ -105,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         btnDead = (RadioButton) findViewById(R.id.dead_btn);
         btnAlive = (RadioButton) findViewById(R.id.alive_btn);
 
+        progressBar =  findViewById(R.id.progress_bar);
+
 
 
 
@@ -137,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
                     fos.write(bitmapdata);
                     fos.flush();
                     fos.close();
+
+                    progressBar.setVisibility(View.VISIBLE);
 
                     uploadFileToServer(file);
                 } catch (Exception e) {
@@ -238,6 +246,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Network_call","IN __ on_response--URL"+url);
 
                     preferences.setImageUrl(url);
+
+                    progressBar.setVisibility(View.GONE);
+
                     Intent intent = new Intent(MainActivity.this, FinRuleActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -245,6 +256,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                 } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Please check your internet connection and try again.",
+                            Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
                     e.printStackTrace();
 
                 }
@@ -254,6 +268,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 System.out.println("err");
+                Toast.makeText(MainActivity.this, "Please check your internet connection and try again.",
+                        Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
 
