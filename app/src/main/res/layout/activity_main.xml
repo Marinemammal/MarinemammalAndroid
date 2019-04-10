@@ -149,7 +149,7 @@
                         android:drawableTint="@color/colorPrimary"
                         android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                         android:gravity="center"
-                        android:text="Dead"
+                        android:text="@string/str_status_dead"
                         android:textColor="@color/colorPrimary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -166,7 +166,7 @@
                         android:drawableTint="@color/colorPrimary"
                         android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                         android:gravity="center"
-                        android:text="Alive"
+                        android:text="@string/str_status_alive"
                         android:textColor="@color/colorPrimary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -185,6 +185,8 @@
                 android:id="@+id/button_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableRight="@drawable/right_arrow"
+                android:gravity="center"
                 android:text="Next" />
 
         </LinearLayout>

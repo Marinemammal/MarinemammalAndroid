@@ -7,11 +7,22 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 //    TextView textView_Latitude;
 //    TextView textView_Longitude;
 //    TextView textView_Date;
+
 
     ImageView imgView_Captured;
     Button    btnNext;
@@ -110,6 +122,23 @@ public class MainActivity extends AppCompatActivity {
         btnAlive = (RadioButton) findViewById(R.id.alive_btn);
 
         progressBar =  findViewById(R.id.progress_bar);
+
+
+//        //String strBtnDead = "Hello World";
+//        String strBtnDead = getResources().getString(R.string.eng_str_status_dead);
+//
+//        SpannableString ss1 = new SpannableString(strBtnDead);
+//        ss1.setSpan(new StyleSpan(Typeface.ITALIC), 0, ss1.length(), 0);
+//        String finalStr = getResources().getString(R.string.malay_str_status_dead)+" \n"+ss1;
+
+//        String engStrDead = getResources().getString(R.string.eng_str_status_dead);
+//
+//        btnDead.setTypeface(Typeface.DEFAULT_BOLD,Typeface.ITALIC);
+//        btnDead.setText(getResources().getString(R.string.malay_str_status_dead)+"\n"+
+//                getResources().getString(R.string.eng_str_status_dead));
+//        btnAlive.setText(getResources().getString(R.string.malay_str_status_alive)+"\n"+
+//                getResources().getString(R.string.eng_str_status_alive));
+
 
 
 
@@ -306,6 +335,47 @@ public class MainActivity extends AppCompatActivity {
         return directory.getAbsolutePath();
     }
 
+
+
+    public class CustomTypefaceSpan extends TypefaceSpan {
+        private final Typeface newType;
+
+        public CustomTypefaceSpan(String family, Typeface type) {
+            super(family);
+            newType = type;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            applyCustomTypeFace(ds, newType);
+        }
+
+        @Override
+        public void updateMeasureState(TextPaint paint) {
+            applyCustomTypeFace(paint, newType);
+        }
+
+        private void applyCustomTypeFace(Paint paint, Typeface tf) {
+            int oldStyle;
+            Typeface old = paint.getTypeface();
+            if (old == null) {
+                oldStyle = 0;
+            } else {
+                oldStyle = old.getStyle();
+            }
+
+            int fake = oldStyle & ~tf.getStyle();
+            if ((fake & Typeface.BOLD) != 0) {
+                paint.setFakeBoldText(true);
+            }
+
+            if ((fake & Typeface.ITALIC) != 0) {
+                paint.setTextSkewX(-0.25f);
+            }
+
+            paint.setTypeface(tf);
+        }
+    }
 
 
 }

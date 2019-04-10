@@ -6,9 +6,54 @@
     <string name="title">Marine Mammal App</string>
 
 
-    <string name="valid_name">Enter valid name</string>
-    <string name="valid_phNum">Enter valid phone number</string>
-    <string name="valid_checkbox">Agree with Terms and Conditions</string>
+    <string name="valid_name">Masukkan nama yang sah \n <i>Enter valid name</i></string>
+    <string name="valid_phNum">Masukkan nombor telefon yang sah \n <i>Enter valid phone number</i></string>
+    <string name="valid_checkbox">Setuju dengan Terma dan Syarat \n <i>Agree with Terms and Conditions</i></string>
+
+    <string name="user_name">Masukkan nama yang sah \n <i>Enter your name</i></string>
+    <string name="user_phNum">Masukkan nombor telefon yang sah \n <i>Enter your phone number</i></string>
+    <string name="terms_conditions">Setuju dengan Terma dan Syarat \n <i>I Agree with Terms and Conditions</i></string>
+
+
+    <string name="str_status_dead">Mati \n<i>Dead</i></string>
+
+
+    <string name="str_status_alive">Hidup \n<i> Alive</i></string>
+
+
+
+    <string name="str_mammal_like">Apakah bentuk rupa mamalia yang dijumpai? \n <i>What did the mammal look like? </i> </string>
+
+
+    <string name="str_no_fin">Tidak mempunyai sirip \n <i> It did not have a fin </i></string>
+
+
+    <string name="str_has_fin">Mempunyai sirip \n<i>It had a fin</i></string>
+
+
+    <string name="str_not_sure">Tidak pasti \n<i>I am not sure</i></string>
+
+
+    <string name="str_no_beak">Tidak mempunyai muncung (mulut) \n <i>It did not have a beak</i></string>
+
+
+    <string name="str_has_beak">Mempunyai mulut muncung \n <i>It had a beak</i></string>
+
+
+    <string name="str_has_grey">Berwarna kelabu \n <i> It was in grey color</i></string>
+
+
+    <string name="str_many_colors">Mempunyai warna selain daripada warna kelabu \n <i>It had colors other than grey</i></string>
+
+
+    <string name="str_grey_pink">Mempunyai warna kelabu dan merah jambu \n <i> It had grey and pink color</i></string>
+
+
+    <string name="str_comments">Sebarang komen? \n <i> Any comments?</i> </string>
+
+
+    <string name="str_success_msg">Data anda sudah berjaya dihantar \n <i>The data has been sent successfully</i></string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

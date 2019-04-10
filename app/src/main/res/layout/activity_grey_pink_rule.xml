@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="What did the mammal look like?"
+        android:text="@string/str_mammal_like"
         android:textSize="25sp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"/>
@@ -54,7 +54,7 @@
                 android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
                 android:gravity="center"
                 android:drawablePadding="20dp"
-                android:text="It had grey and pink color"
+                android:text="@string/str_grey_pink"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 />
@@ -74,7 +74,7 @@
                 android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
                 android:gravity="center"
                 android:drawablePadding="20dp"
-                android:text="I am not sure"
+                android:text="@string/str_not_sure"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -94,6 +94,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_alignParentBottom="true"
+        android:drawableRight="@drawable/right_arrow"
+        android:gravity="center"
         android:text="Next" />
 
 
