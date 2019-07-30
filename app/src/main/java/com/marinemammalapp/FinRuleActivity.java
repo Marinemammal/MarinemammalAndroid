@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -38,13 +40,30 @@ public class FinRuleActivity extends AppCompatActivity {
 
     public void initializeViews(){
 
+        //Defining toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ImageView imageView_back =  findViewById(R.id.imageView_back);
+        imageView_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent i = new Intent(FinRuleActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        radioGroup_options = (RadioGroup)findViewById(R.id.fish_appearance_type);
-        radioButton_noFin  = (RadioButton)findViewById(R.id.option_no_fin);
-        radioButton_Fin = (RadioButton)findViewById(R.id.option_fin);
-        radioButton_notSure   = (RadioButton)findViewById(R.id.option_not_sure);
-        btnNext               = (Button)     findViewById(R.id.btn_next);
-        tvMammal             = (TextView) findViewById(R.id.tv_mammal);
+
+        radioGroup_options = findViewById(R.id.fish_appearance_type);
+        radioButton_noFin  = findViewById(R.id.option_no_fin);
+        radioButton_Fin = findViewById(R.id.option_fin);
+        radioButton_notSure   = findViewById(R.id.option_not_sure);
+        btnNext               = findViewById(R.id.btn_next);
+        tvMammal             =  findViewById(R.id.tv_mammal);
 
 
 
@@ -61,6 +80,7 @@ public class FinRuleActivity extends AppCompatActivity {
                     preferences.setMammalColorPink("");
                     Log.d("On Img click","No fin is selected -- OK");
                     Intent intent = new Intent(FinRuleActivity.this, AdditionalCommentsActivity.class );
+                    intent.putExtra("KEY","FinRuleActivity");
                     startActivity(intent);
 
 

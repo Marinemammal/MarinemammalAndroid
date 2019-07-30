@@ -20,48 +20,41 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/applogo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".InstructionsActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".RegistrationActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".ImageDescriptionActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name=".FinRuleActivity"
-            android:screenOrientation="portrait">
-
-    </activity>
-
-        <activity android:name=".BeakRuleActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".OnlyGreyRuleActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".GreyPinkRuleActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".ResultActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".AdditionalCommentsActivity"
+            android:name=".FinRuleActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".BeakRuleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OnlyGreyRuleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GreyPinkRuleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AdditionalCommentsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

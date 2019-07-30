@@ -10,34 +10,31 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.marinemammalapp.WebServices.APIClient;
 import com.marinemammalapp.WebServices.APIInterface;
 import com.marinemammalapp.dataObjects.SaveDataResponse;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AdditionalCommentsActivity extends AppCompatActivity implements LocationListener {
 
+    TextView tvMammalDescMalay;
+    TextView tvMammalDescEng;
     TextView tvSuccessMsg;
     EditText editTextComments;
     Button btnNext;
@@ -56,7 +53,7 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
     public static final long MIN_TIME = 1000 * 10;
     public static final float MIN_DISTANCE = 10;
 
-
+    String backClickRedirect ="";
 
 
     AppPreferences preferences;
@@ -73,7 +70,10 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
 
         preferences = new AppPreferences(AdditionalCommentsActivity.this);
 
-
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null) {
+            backClickRedirect = extras.getString("KEY");
+        }
 
         initializeViews();
 
@@ -81,11 +81,48 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
 
     public void initializeViews(){
 
+        //Defining toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ImageView imageView_back =  findViewById(R.id.imageView_back);
+        imageView_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if(backClickRedirect.equalsIgnoreCase("FinRuleActivity")){
+                        Intent i = new Intent(AdditionalCommentsActivity.this, FinRuleActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else if(backClickRedirect.equalsIgnoreCase("BeakRuleActivity")){
+                        Intent i = new Intent(AdditionalCommentsActivity.this, BeakRuleActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else if(backClickRedirect.equalsIgnoreCase("OnlyGreyRuleActivity")){
+                        Intent i = new Intent(AdditionalCommentsActivity.this, OnlyGreyRuleActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else if(backClickRedirect.equalsIgnoreCase("GreyPinkRuleActivity")){
+                        Intent i = new Intent(AdditionalCommentsActivity.this, GreyPinkRuleActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else{
+                        Intent i = new Intent(AdditionalCommentsActivity.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
 
-        editTextComments      = (EditText)   findViewById(R.id.edit_text_comments);
-        btnNext               = (Button)     findViewById(R.id.btn_next);
+        tvMammalDescMalay          =   findViewById(R.id.mammal_description_malay);
+        tvMammalDescEng          =   findViewById(R.id.mammal_description_eng);
+        editTextComments      =    findViewById(R.id.edit_text_comments);
+        btnNext               =     findViewById(R.id.btn_next);
 
         progressBar =  findViewById(R.id.progress_bar);
 
@@ -94,7 +131,27 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
 
         dateFormat = new SimpleDateFormat("MM/dd/yyyy h:mm a");
         date = dateFormat.format(calendar.getTime());
-        //textView_Date.setText(date);
+
+
+
+        if(backClickRedirect.equalsIgnoreCase("FinRuleActivity")){
+            tvMammalDescMalay.setText(getResources().getString(R.string.str_fin_malay));
+             tvMammalDescEng.setText(getResources().getString(R.string.str_fin_eng));
+        }else if(backClickRedirect.equalsIgnoreCase("BeakRuleActivity")){
+            tvMammalDescMalay.setText(getResources().getString(R.string.str_beak_malay));
+            tvMammalDescEng.setText(getResources().getString(R.string.str_beak_eng));
+        }else if(backClickRedirect.equalsIgnoreCase("OnlyGreyRuleActivity")){
+            tvMammalDescMalay.setText(getResources().getString(R.string.str_grey_malay));
+            tvMammalDescEng.setText(getResources().getString(R.string.str_grey_eng));
+        }else if(backClickRedirect.equalsIgnoreCase("GreyPinkRuleActivity")){
+            tvMammalDescMalay.setText(getResources().getString(R.string.str_pink_grey_malay));
+            tvMammalDescEng.setText(getResources().getString(R.string.str_pink_grey_eng));
+        }else{
+            tvMammalDescMalay.setText(getResources().getString(R.string.str_fin_malay));
+            tvMammalDescEng.setText(getResources().getString(R.string.str_fin_eng));
+        }
+
+
 
         try {
             Log.d("Location","in here");
@@ -124,10 +181,6 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
 
         HashMap<String, Object> saveData = new HashMap<>();
 
-        //MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-
-
-
         Log.d("Network_call","In method");
 
 
@@ -144,7 +197,6 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
         saveData.put("comments",editTextComments.getText().toString());
         saveData.put("imageurl",preferences.getImageUrl());
 
-        // Call<SaveDataResponse> data = apiService.saveDetails(saveData,filePart,"");
         Call<SaveDataResponse> data = apiService.saveDetails(saveData);
 
         Log.d("Network_call","network call made");
@@ -156,44 +208,19 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
 
                 try {
 
-
-                    //String data = response.body().toString();
-
                     if (response.raw().code() == 400) {
                         Log.d("Error code 400",response.errorBody().string());
                     }
 
-                    String raw  = response.raw().toString();
-//                    Intent intent = new Intent(AdditionalCommentsActivity.this, ResultActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(intent);
-//                    finish();
-
                     Log.d("Network_call","IN __ on_response - ");
 
-                    //if(response!=null) {
-
                     progressBar.setVisibility(View.GONE);
-
-                    //Log.i("Update profile response", response.body().toString());
-
-                    //if (Integer.parseInt(response.body().statusCode) == 300) {
 
                     Intent intent = new Intent(AdditionalCommentsActivity.this, ResultActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
 
-
-                    // } else {
-
-                    //}
-//                    }
-//
-//                    else{
-//                        progressBar.setVisibility(View.GONE);
-//
-//                    }
                 } catch (Exception e) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(AdditionalCommentsActivity.this, "Please check your internet connection and try again.",
@@ -227,11 +254,6 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
 
             roundedLatitude = (int)Math.round(latitude * 10000)/(double)10000;
             roundedLongitude = (int)Math.round(longitude * 10000)/(double)10000;
-
-            //textView_Latitude.setText(""+roundedLatitude);
-            //textView_Longitude.setText(""+roundedLongitude);
-
-
 
             Log.d("latlng", "" + latitude + "," + longitude);
         } catch (Exception e) {
@@ -281,10 +303,6 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
                 roundedLatitude = (int)Math.round(latitude * 10000)/(double)10000;
                 roundedLongitude = (int)Math.round(longitude * 10000)/(double)10000;
 
-                //textView_Latitude.setText(""+roundedLatitude);
-                //textView_Longitude.setText(""+roundedLongitude);
-
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -302,48 +320,3 @@ public class AdditionalCommentsActivity extends AppCompatActivity implements Loc
     }
 
 }
-
-
-//    Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-//    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, bytes);
-//
-//                Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-//                String pathToImage =  getRealPathFromURI(tempUri);
-//
-//                String fileNameSegments[] = pathToImage.split("/");
-//                String fileName = fileNameSegments[fileNameSegments.length - 1];
-//                String fileFormateSegments[] = fileName.split(".");
-//                String fileFormate = "";
-//                if (fileFormateSegments.length > 1) {
-//                fileFormate = "."
-//                + fileNameSegments[fileFormateSegments.length - 1];
-//                System.out.println("fileFormate = " + fileFormate);
-//                }
-//                String finalFileName = "file"+fileFormate;
-//
-//                Log.d("finalFileName",""+finalFileName);
-//                try {
-//                File file = new File(mContext.getCacheDir(), finalFileName);
-//                file.createNewFile();
-//
-////Convert bitmap to byte array
-//                profile_image.setDrawingCacheEnabled(false);
-//
-//                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                thumbnail.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-//                byte[] bitmapdata = bos.toByteArray();
-//
-////write the bytes in file
-//                FileOutputStream fos = new FileOutputStream(file);
-//                fos.write(bitmapdata);
-//                fos.flush();
-//                fos.close();
-//                uploadFileToServer(file);
-//                } catch (Exception e) {
-//                e.printStackTrace();
-//                }
-
-
-
-

@@ -23,6 +23,7 @@ public class AppPreferences {
     private static String MAMMAL_COLOR_PINK = "mammal_color_pink";
     private static String MAMMAL_IS_ALIVE = "mammal_is_alive";
     private static String IMAGE_URL = "image_url";
+    private static String VERSION_CODE = "1";
 
 
 
@@ -117,6 +118,15 @@ public class AppPreferences {
 
     public void setImageUrl(String imageUrl){
         _prefsEditor.putString(IMAGE_URL, imageUrl);
+        _prefsEditor.commit();
+    }
+
+    public String getVersionCode() {
+        return _sharedPrefs.getString(VERSION_CODE, "1");
+    }
+
+    public void setVersionCode(String versionCode){
+        _prefsEditor.putString(VERSION_CODE, versionCode);
         _prefsEditor.commit();
     }
 

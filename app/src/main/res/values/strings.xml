@@ -5,6 +5,8 @@
 
     <string name="title">Marine Mammal App</string>
 
+    <string name="image_back_desc">Back button</string>
+
 
     <string name="valid_name">Masukkan nama yang sah \n <i>Enter valid name</i></string>
     <string name="valid_phNum">Masukkan nombor telefon yang sah \n <i>Enter valid phone number</i></string>
@@ -21,8 +23,7 @@
     <string name="str_status_alive">Hidup \n<i> Alive</i></string>
 
 
-
-    <string name="str_mammal_like">Apakah bentuk rupa mamalia yang dijumpai? \n <i>What did the mammal look like? </i> </string>
+    <string name="str_mammal_like">Apakah bentuk rupa mamalia yang dijumpai? \n <i>What did the marine mammal look like? </i> </string>
 
 
     <string name="str_no_fin">Tidak mempunyai sirip \n <i> It did not have a fin </i></string>
@@ -54,7 +55,31 @@
 
     <string name="str_success_msg">Data anda sudah berjaya dihantar \n <i>The data has been sent successfully</i></string>
 
+    <string name="str_fin_malay">Mamalia marin mungkin porpoise tanpa sirip </string>
+    <string name="str_fin_eng"> \n The marine mammal is probably finless porpoise</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_beak_malay">Mamalia marin mungkin lumba-lumba irrawady </string>
+    <string name="str_beak_eng">\n The marine mammal is probably irrawady dolphin</string>
+
+    <string name="str_grey_malay">Mamalia marin mungkin lumba-lumba bottlenose  </string>
+    <string name="str_grey_eng">\n The marine mammal is probably bottlenose dolphin</string>
+
+    <string name="str_pink_grey_malay">Mamalia marin mungkin lumba-lumba humpback </string>
+    <string name="str_pink_grey_eng">\n The marine mammal is probably indo pacific humpback dolphin</string>
+
+    <string name="str_intro_malay">Pengenalan \n Sila ambil gambar marin mamalia yang dijumpai dan ikut arahan yang
+        diberikan di dalam aplikasi mamalia marin ini. Dengan aplikasi ini,
+        anda boleh mengambil sebarang gambar mamalia marin, menentukan samada ia
+        mati atau hidup dan mengenal pasti jenis spesies. Anda akan menyumbang kepada data
+        program pemantauan mamalia marin yang sedang berjalan di Pulau Pinang, di mana ia sangat
+        penting untuk memperoleh maklumat mengenai kesebaran mamalia marin serta ketumpatan bilangan
+        mereka. Terima kasih.</string>
+
+    <string name="str_intro_eng">Introduction Statement \n Please take a picture of the marine mammal and
+        follow the instructions in this marine mammal app. It allows you to take a picture of a marine mammal,
+        determine if it is dead or alive and identify its species. You will contribute to an on-going
+        monitoring programme for marine mammals in Penang which is very important for learning about
+        their distribution and density. Thank you</string>
+
+
 </resources>

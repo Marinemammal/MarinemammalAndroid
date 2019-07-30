@@ -4,16 +4,23 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -62,12 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
     Bitmap photo;
 
-
-//    TextView textView_Latitude;
-//    TextView textView_Longitude;
-//    TextView textView_Date;
-
-
     ImageView imgView_Captured;
     Button    btnNext;
     RadioButton btnDead;
@@ -83,66 +84,78 @@ public class MainActivity extends AppCompatActivity {
         apiService = APIClient.getClient().create(APIInterface.class);
         preferences = new AppPreferences(MainActivity.this);
 
-        if(preferences.getUserName() == null ||
-                preferences.getUserName().equalsIgnoreCase("")||
-                preferences.getPhNum()== null||
-                preferences.getPhNum().equalsIgnoreCase("")) {
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = String.valueOf(pInfo.getLongVersionCode());
 
-            Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        }
-        else{
+            if (!preferences.getVersionCode().equalsIgnoreCase(version)) {
 
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.CAMERA},
-                        100);
+                preferences.clearPreferences();
 
-
+                preferences.setVersionCode(version);
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
-            else {
+            else{
+                if(preferences.getUserName() == null ||
+                        preferences.getUserName().equalsIgnoreCase("")||
+                        preferences.getPhNum()== null||
+                        preferences.getPhNum().equalsIgnoreCase("")) {
 
+                    System.out.println("failing here");
 
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+
+                    if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+                        ActivityCompat.requestPermissions(
+                                this,
+                                new String[]{Manifest.permission.CAMERA},
+                                100);
+                    }
+                    else {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    }
+                }
             }
+        }catch(Throwable t) {
+            // update failed, or cancelled
         }
+
+
 
         setContentView(R.layout.activity_main);
 
-        //textView_Latitude = (TextView) findViewById(R.id.tv_latitude);
-        //textView_Longitude = (TextView) findViewById(R.id.tv_longitude);
-        //textView_Date = (TextView) findViewById(R.id.tv_date);
-        imgView_Captured = (ImageView) findViewById(R.id.image_captured);
-        btnNext = (Button) findViewById(R.id.button_next);
-        btnDead = (RadioButton) findViewById(R.id.dead_btn);
-        btnAlive = (RadioButton) findViewById(R.id.alive_btn);
+        //Defining toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ImageView imageView_back = findViewById(R.id.imageView_back);
+        imageView_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        imgView_Captured =  findViewById(R.id.image_captured);
+        btnNext =  findViewById(R.id.button_next);
+        btnDead =  findViewById(R.id.dead_btn);
+        btnAlive =  findViewById(R.id.alive_btn);
 
         progressBar =  findViewById(R.id.progress_bar);
-
-
-//        //String strBtnDead = "Hello World";
-//        String strBtnDead = getResources().getString(R.string.eng_str_status_dead);
-//
-//        SpannableString ss1 = new SpannableString(strBtnDead);
-//        ss1.setSpan(new StyleSpan(Typeface.ITALIC), 0, ss1.length(), 0);
-//        String finalStr = getResources().getString(R.string.malay_str_status_dead)+" \n"+ss1;
-
-//        String engStrDead = getResources().getString(R.string.eng_str_status_dead);
-//
-//        btnDead.setTypeface(Typeface.DEFAULT_BOLD,Typeface.ITALIC);
-//        btnDead.setText(getResources().getString(R.string.malay_str_status_dead)+"\n"+
-//                getResources().getString(R.string.eng_str_status_dead));
-//        btnAlive.setText(getResources().getString(R.string.malay_str_status_alive)+"\n"+
-//                getResources().getString(R.string.eng_str_status_alive));
-
-
-
-
-
 
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -161,21 +174,24 @@ public class MainActivity extends AppCompatActivity {
                     file.createNewFile();
 
                     //Convert bitmap to byte array
-
-
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    photo.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-                    byte[] bitmapdata = bos.toByteArray();
+                    if(photo!=null) {
+                        photo.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                        byte[] bitmapdata = bos.toByteArray();
 
-                    //write the bytes in file
-                    FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(bitmapdata);
-                    fos.flush();
-                    fos.close();
+                        //write the bytes in file
+                        FileOutputStream fos = new FileOutputStream(file);
+                        fos.write(bitmapdata);
+                        fos.flush();
+                        fos.close();
 
-                    progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
 
-                    uploadFileToServer(file);
+                        uploadFileToServer(file);
+                    }
+                    else{
+                        showAlertDialog("Image Required", "Please take a picture to continue",false,"OK");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -190,28 +206,90 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("testing","In here1");
 
-        if (requestCode == 100) {
-
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-
-            } else {
-
-                if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
-                    ActivityCompat.requestPermissions(
-                            this,
-                            new String[]{Manifest.permission.CAMERA},
-                            100);
-
+        boolean allPermissionsGranted = true;
+        if(grantResults.length>0){
+            for(int grantResult: grantResults){
+                if(grantResult != PackageManager.PERMISSION_GRANTED){
+                    Log.d("testing","In here2");
+                    allPermissionsGranted = false;
+                    break;
                 }
-
             }
         }
+
+
+        if(!allPermissionsGranted){
+            boolean somePermissionsForeverDenied = false;
+            for(String permission: permissions){
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
+                    //denied
+                    Log.e("denied", permission);
+                    if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+                        ActivityCompat.requestPermissions(
+                                this,
+                                new String[]{Manifest.permission.CAMERA},
+                                100);
+                        Log.d("testing","Rejecting permission");
+                        Log.d("testing","In here3");
+                    }
+                }else{
+                    if(ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED){
+                        //allowed
+                        Log.e("allowed", permission);
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                        Log.d("testing","In here4");
+                    } else{
+                        //set to never ask again
+                        Log.e("set to never ask again", permission);
+                        somePermissionsForeverDenied = true;
+                        Log.d("testing","In here5");
+                    }
+                }
+            }
+            if(somePermissionsForeverDenied) {
+                showAlertDialog("Permissions Required", "You have forcefully denied some of the required permissions " +
+                        "for this action. Please open settings, go to permissions and allow them.", true,"Settings");
+            }
+        } else {
+            Log.d("testing","In here6 - permission accepted first time");
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
+
+//        if (requestCode == 100) {
+//
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//
+//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//
+//            } else {
+//
+//                if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+//                    ActivityCompat.requestPermissions(
+//                            this,
+//                            new String[]{Manifest.permission.CAMERA},
+//                            100);
+//                    Log.d("testing","Rejecting permission");
+//                }
+//                else{
+//                    Log.d("testing","Showing alert dialog");
+//                    showAlertDialog("Permissions Required","You have forcefully denied some of the required permissions \" +\n" +
+//                            "                        \"for this action. Please open settings, go to permissions and allow them.");
+//                }
+//
+//            }
+//        }
+
     }
+
+
+
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -220,11 +298,6 @@ public class MainActivity extends AppCompatActivity {
             photo = (Bitmap) data.getExtras().get("data");
             imgView_Captured.setImageBitmap(photo);
             saveToInternalStorage(photo);
-
-
-
-
-
         }
         else{
             Log.d("Camera","Camera exit without any image-Add 'no image' logo later");
@@ -281,8 +354,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, FinRuleActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
-
 
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Please check your internet connection and try again.",
@@ -377,6 +448,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void showAlertDialog(String title, String message, final boolean btnType, String btnName) {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(btnName, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(btnType) {
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", getPackageName(), null));
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }else{
+                            dialog.dismiss();
+                        }
+                    }
+                })
 
+                .setCancelable(false)
+                .create()
+                .show();
+    }
 }
 

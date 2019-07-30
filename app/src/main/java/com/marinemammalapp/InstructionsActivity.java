@@ -4,64 +4,47 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class ResultActivity extends AppCompatActivity {
+public class InstructionsActivity extends AppCompatActivity {
 
-    TextView tvSuccessMsg;
     Button btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
+        setContentView(R.layout.activity_instructions);
 
-
-        initializeViews();
-
-    }
-
-    public void initializeViews(){
-
-        //Defining toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        TextView txtTitle =findViewById(R.id.tv_toolbartitle);
+        txtTitle.setText(getResources().getString(R.string.title));
+
         final ImageView imageView_back =  findViewById(R.id.imageView_back);
         imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent i = new Intent(ResultActivity.this, MainActivity.class);
-                    startActivity(i);
-                    finish();
+                    finishAffinity();
+                    System.exit(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
 
-
-        tvSuccessMsg          =  findViewById(R.id.tv_msg);
-        btnNext               =  findViewById(R.id.btn_next);
-
-
+        btnNext = findViewById(R.id.btn_next);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-
-                Intent intent = new Intent(ResultActivity.this, MainActivity.class );
+            public void onClick(View v) {
+                Intent intent = new Intent(InstructionsActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-
-
-
+                finish();
             }
         });
     }

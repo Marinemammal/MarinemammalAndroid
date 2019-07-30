@@ -10,7 +10,7 @@
         android:id="@+id/toobar"
         layout="@layout/layout_toolbar" />
 
-    <LinearLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toobar"
@@ -43,7 +43,7 @@
             android:inputType="phone"
             android:maxLength="11" />
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="30dp"
@@ -53,8 +53,8 @@
 
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/checkbox_terms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
 
             <TextView
                 android:id="@+id/tv_terms"
@@ -64,11 +64,11 @@
                 />
 
 
-        </LinearLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
 
 
 
-    </LinearLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
     <Button
         android:id="@+id/button_next"
         android:layout_width="match_parent"
